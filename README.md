@@ -124,7 +124,7 @@ We welcome contributions to FLORIDyn+, your help is greatly appreciated!
     4. **Commit & Push**: Commit your changes with clear messages and push to your branch.
     5. **Open PR**: Open a Pull Request on GitHub against our main branch, explaining your changes.
 ---
-## Citation
+## Sources
 [1] M. Becker, B. Ritter, B. Doekemeijer, D. van der Hoek, U. Konigorski, D. Allaerts, and J.W. van Wingerden, “The revised FLORIDyn model: Implementation of heterogeneous flow and the Gaussian wake,” 1 2022
 
 [2] National Renewable Energy Laboratory, “FLORIS,” 2025. [Online].
