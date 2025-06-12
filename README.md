@@ -103,16 +103,13 @@ To integrate a new turbine model with the current FSM controller, you need to ma
 ---
 
 ## Future Improvements
+- Integrate mechanical loads modeling to provide additional insights into potential lifetime reduction and catastrophic failure.
+- Start simulations from steady state to avoid unnecessary computation during wake stabilization
+- Move beyond the simple wind-cubed model by incorporating turbine inertia and modeling losses from braking systems and generator torque to calculate power.
+- Add sensor noise, delays, and drift to better simulate detection mechanisms under real-world uncertainties.
+- Add a database of turbine presets so users can select common turbines without manual data entry.
+- Simplifying adding attack scenarios
 
-- **Lowering Computational Costs**: 
-  - Start simulations from steady state to avoid unnecessary computation during wake stabilization
-- **Improving Realism**:
-  - Move beyond the simple wind-cubed model by incorporating turbine inertia and modeling losses from braking systems and generator torque.
-  - Add sensor noise, delays, and drift to better simulate detection mechanisms under real-world uncertainties.
-- **Enhancing User Friendliness**:
-  - Improve in-code comments to make the platform easier to understand and extend.
-  - Add a database of turbine presets so users can select common turbines without manual data entry.
-  - Simplify adding attack scenarios by providing templates, clearer instructions, or a graphical interface..
 ---
 
 ## Contributing
@@ -134,4 +131,5 @@ We welcome contributions to FLORIDyn+, your help is greatly appreciated!
 Available: https://nrel.github.io/floris/index.html
 
 [3] David J. Mack (2025). movcorr(x, y, k, varargin): Compute windowed correlation coefficient (https://www.mathworks.com/matlabcentral/fileexchange/65342-movcorr-x-y-k-varargin-compute-windowed-correlation-coefficient), MATLAB Central File Exchange. Retrieved June 12, 2025.
+
 
