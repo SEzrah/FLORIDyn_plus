@@ -13,7 +13,7 @@
 We consider a scenario with a wind farm of four turbines. Initially, wind turbine T4 is shut down to limit mechanical loads and preserve its lifetime, while the other turbines operate at 75% of their maximum potential. 
 ![Wind farm example](./FLORIDyn+/Data/Example_plots/image.png)
 After 200 seconds in steady state, an adversary activates the emergency brake on turbine T1.
-![alt text](./FLORIDyn+/Data/Example_plots/image-2.png)
+![alt text](./FLORIDyn+/Data/Example_plots/image-1.png)
 This causes a drop in total power output, falling below the allowed discrepancy threshold at t = 210 s.
 ![alt text](./FLORIDyn+/Data/Example_plots/power.jpg)
 In response, T4 is started up at t = 211 s, which eventually compensates for the power loss and counters the attack.
