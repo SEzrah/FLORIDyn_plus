@@ -36,9 +36,8 @@ nT = length(T.D); % number of turbines
 Control.yaw  = T.yaw;
 
 % Initialize attack scenario variables (NaN or false by default)
-Control.delta_yaw = NaN(1, nT);
-Control.t_yaw_start = NaN(1, nT);
-Control.t_yaw_end = NaN(1, nT);
+Atk.delta_yaw = NaN(5, nT);
+Atk.t_yaw_start = NaN(5, nT);
 
 Atk.factor = NaN(5, nT);
 Atk.t_downreg = NaN(5, nT);
