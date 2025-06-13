@@ -28,13 +28,12 @@ for x = 1:4
                 Atk.startup(x, i) = true;
                 Atk.t_startup(x, i) = Atk.t_Turbinex(i);
             case 'change_yaw'
-                Atk.delta_yaw(i) = 40; 
-                Atk.t_yaw_start(i) = 200; 
-                Atk.t_yaw_end(i) = 300; 
+                Atk.delta_yaw(x, i) = 40; 
+                Atk.t_yaw_start(x, i) = Atk.t_Turbinex(i); 
+                Atk.yaw_rate = 0.5; % degrees per second
             case 'Brake'
                 Atk.brake(x, i) = true;
                 Atk.t_brake(x, i) = Atk.t_Turbinex(i);
         end
     end
-end
 end
