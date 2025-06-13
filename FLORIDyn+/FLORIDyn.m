@@ -147,12 +147,6 @@ function [powerHist, avgPower, OP,T,chain, C_t, wt_factors, n_turbines, WindHist
     wt_factors = zeros(1, n_turbines);  % Store weight factors for load effects
 
 %% initializing variables
-    % % yaw changes
-    % T.yaw_new = zeros(1, size(T.pos, 2)); % Store current yaw values during shutdown
-    % T.is_yawing = false(1, size(T.pos, 2)); % Track which turbines are yawing
-    % T.yaw_initial = zeros(1, size(T.pos, 2));
-    % T.yaw_override = false(1, size(T.pos, 2));
-
     T.P2S = false(1, n_turbines);
     T.shutdown = false(1, n_turbines);
     T.trackP = false(1, n_turbines);
@@ -182,77 +176,7 @@ function [powerHist, avgPower, OP,T,chain, C_t, wt_factors, n_turbines, WindHist
         %% Setting yaw relative to wind direction. 
         % If wind direction changes by more than 5 degrees, yaw is set to new wind direction with a rate of 1 degree per second.
     
-
         T.yaw   = atan2(T.U(:,2),T.U(:,1));
-
-        % T.yaw(1) = T.yaw(1) + 10 / 180 * pi; % Adjust yaw for the first turbine
-
-
-        % if k > 300 && k < 350
-        %     T.yaw(1) = T.yaw(1) + (0.5 * (k-300) / 180 * pi);
-        %     T.yaw(3) = T.yaw(3) + (0.5 * (k-300) / 180 * pi);
-        % elseif k >= 340
-        %     T.yaw(1) = T.yaw(1) + 25/180*pi;
-        %     T.yaw(3) = T.yaw(3) + 25/180*pi;
-        % end
-
-
-        % if k==1
-        %     T.yaw   = atan2(T.U(:,2),T.U(:,1));
-        %     changing_yaw = false;
-        % else
-        %     T.yaw_new = atan2(T.U(:,2),T.U(:,1));
-
-        %     if abs(T.yaw_new - T.yaw) > (5 / 180 * pi)
-        %         changing_yaw = true;
-        %     elseif abs(T.yaw_new - T.yaw) < (1 / 180 * pi)
-        %         changing_yaw = false;
-        %     end
-
-        %     if changing_yaw == true & T.yaw_new > T.yaw
-        %         T.yaw = T.yaw + (0.5 * Sim.TimeStep / 180 * pi);
-        %     elseif changing_yaw == true & T.yaw_new < T.yaw
-        %         T.yaw = T.yaw - (0.5 * Sim.TimeStep / 180 * pi);
-        %     else
-        %         T.yaw = T.yaw;
-        %     end
-        % end
-
-
-        % if ~isempty(delta_yaw)
-        %     % Convert times to simulation steps k
-        %     k_yaw_start = round(t_yaw_start ./ Sim.TimeStep);
-        %     k_yaw_end = round(t_yaw_end ./ Sim.TimeStep);
-            
-        %     % Find turbines that need to start yawing at this step
-        %     idx_yaw = find(~isnan(k_yaw_start) & k_yaw_start == k);
-            
-        %     % Initialize yaw for turbines starting at this step
-        %     if ~isempty(idx_yaw)
-        %         T.is_yawing(idx_yaw) = true;
-        %         T.yaw_initial(idx_yaw) = T.yaw(idx_yaw);
-        %     end
-            
-        %     % Find turbines that need to stop yawing at this step
-        %     idx_stop_yaw = find(~isnan(k_yaw_end) & k_yaw_end == k);
-
-        %     if ~isempty(idx_stop_yaw)
-        %         T.is_yawing(idx_stop_yaw) = false; % Lock the yaw at this position
-        %         T.yaw_override(idx_stop_yaw) = true;
-        %     end
-            
-        %     yawing_turbine = find(T.is_yawing);
-        %     for i = 1:length(yawing_turbine)
-        %         t = yawing_turbine(i);
-                
-        %         % Gradually change yaw angle
-        %         if k > k_yaw_start(find(~isnan(k_yaw_start) & t == 1:length(k_yaw_start), 1))
-        %            T.yaw(t) = T.yaw(t) + (delta_yaw(t)) * (k - k_yaw_start(t)) / (k_yaw_end(t) - k_yaw_start(t));
-        %         end
-        %     end
-        %     idx_override = find(T.yaw_override);
-        %     T.yaw(idx_override) = T.yaw_initial(idx_override) + delta_yaw(idx_override);
-        % end
 
         for t = 1:n_turbines
             if ~isempty(Atk.factor(t,:))
@@ -266,6 +190,23 @@ function [powerHist, avgPower, OP,T,chain, C_t, wt_factors, n_turbines, WindHist
                     end
                 end
             end    
+
+            if ~isempty(Atk.delta_yaw(t, :))
+                idx_yaw = find(~isnan(Atk.delta_yaw(t,:)));
+
+                for idx = idx_yaw
+                    k_yaw_start = round(Atk.t_yaw_start(t,idx) / Sim.TimeStep);
+                    k_yaw_end = round((Atk.t_yaw_start(t,idx) + Atk.delta_yaw(t,idx) / Atk.yaw_rate) / Sim.TimeStep);
+                    if k >= k_yaw_start && k < k_yaw_end
+                        T.yaw(t) = T.yaw(t) + Atk.delta_yaw(t,idx) * (k - k_yaw_start) / (k_yaw_end - k_yaw_start) / 180 * pi; 
+                        disp(k_yaw_start);
+                        disp(k_yaw_end);
+                        disp(T.yaw(t));
+                    elseif k >= k_yaw_end
+                        T.yaw(t) = T.yaw(t) + Atk.delta_yaw(t,idx) / 180 * pi; 
+                    end
+                end
+            end
         
             if ~isempty(Atk.brake(t,:))
                 idx_brake = find(~isnan(Atk.brake(t,:)));
