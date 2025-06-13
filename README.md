@@ -6,7 +6,8 @@
 
 ## Paper and Citation
 
-[Include a link or citation to your paper here.]
+The paper about this toolbox is currently unpublished. If you use FLORIDyn+ in your research, please cite this documentation or contact the author for more information:
+G. W. Dinkla, S. Ezrah, J. T. Perton, and L. de Vries, “Toolbox for simulating cyber-physical attacks on wind farms”, unpublished paper, 2025 
 
 ---
 ## Example
